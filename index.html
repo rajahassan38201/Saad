@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hassan General Store - Premium Kiryana Online</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- jsPDF & AutoTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10b981', // Emerald 500
+                        secondary: '#0f766e', // Teal 700
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        
+        /* Custom Animations */
+        .fade-in { animation: fadeIn 0.8s ease-out; }
+        .slide-up { animation: slideUp 0.8s ease-out; }
+        .float { animation: float 6s ease-in-out infinite; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes float { 
+            0% { transform: translateY(0px); } 
+            50% { transform: translateY(-20px); } 
+            100% { transform: translateY(0px); } 
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #10b981, #0f766e); border-radius: 5px; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2 cursor-pointer group" onclick="renderHome()">
+                <div class="bg-gradient-to-tr from-emerald-500 to-teal-600 text-white p-2 rounded-lg shadow-lg group-hover:rotate-12 transition duration-300">
+                    <i class="fas fa-store text-xl"></i>
+                </div>
+                <h1 class="text-2xl font-extrabold tracking-tight text-gray-800">Hassan<span class="text-emerald-600">Store</span></h1>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <a href="#" onclick="renderHome()" class="hidden md:block font-medium text-gray-600 hover:text-emerald-600 transition">Home</a>
+                <a href="#categories-section" class="hidden md:block font-medium text-gray-600 hover:text-emerald-600 transition">Rashan</a>
+                <a href="#contact-section" class="hidden md:block font-medium text-gray-600 hover:text-emerald-600 transition">Contact</a>
+                
+                <div class="relative cursor-pointer hover:scale-110 transition duration-200" onclick="renderCart()">
+                    <div class="bg-gray-100 p-2 rounded-full text-emerald-600">
+                        <i class="fas fa-shopping-basket text-xl"></i>
+                    </div>
+                    <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-white shadow-sm">0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="app" class="flex-grow pt-20">
+        <!-- Dynamic Content Injected Here -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8 relative overflow-hidden mt-auto">
+        <!-- Decorative gradient blob -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-1">
+                    <h2 class="text-3xl font-bold mb-4 flex items-center gap-2">
+                        <i class="fas fa-store text-emerald-500"></i> HassanStore
+                    </h2>
+                    <p class="text-gray-400 mb-6 leading-relaxed">Your trusted local partner for monthly grocery, daal, rice, and spices. Quality rashan delivered to your door.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition duration-300"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition duration-300"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition duration-300"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6 text-emerald-400">Quick Links</h3>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#" onclick="renderHome()" class="hover:text-white transition">Home</a></li>
+                        <li><a href="#categories-section" class="hover:text-white transition">Buy Rashan</a></li>
+                        <li><a href="#" class="hover:text-white transition">Delivery Areas</a></li>
+                        <li><a href="#contact-section" class="hover:text-white transition">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6 text-emerald-400">Contact Info</h3>
+                    <ul class="space-y-4 text-gray-400">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt mt-1 text-emerald-500"></i>
+                            <span>123 Green Street, Market City, Islamabad</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-phone-alt text-emerald-500"></i>
+                            <span>+92 302 3536363</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-envelope text-emerald-500"></i>
+                            <span>rajahassan38201@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6 text-emerald-400">Rate Updates</h3>
+                    <p class="text-gray-400 mb-4 text-sm">Subscribe to get daily rates for sugar, oil and atta.</p>
+                    <div class="flex flex-col gap-2">
+                        <input type="email" placeholder="Your email address" class="bg-gray-800 text-white border-none rounded-lg py-3 px-4 focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <button class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:shadow-lg hover:scale-[1.02] transition duration-300">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+                <p>&copy; 2026 Hassan General Store. Owned by Hafiz Hassan Abdullah.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal (Hidden by default) -->
+    <div id="product-modal" class="fixed inset-0 z-[60] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 transform transition-all scale-100 fade-in relative overflow-hidden">
+            <!-- Modal Background Blob -->
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-100 rounded-full opacity-50"></div>
+            
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition bg-white rounded-full p-2 hover:bg-red-50 z-10">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            
+            <div class="text-center mb-8 relative z-10">
+                <div id="modal-emoji" class="text-8xl mb-4 drop-shadow-lg filter float">🍎</div>
+                <h3 id="modal-title" class="text-3xl font-extrabold text-gray-800 mb-2">Apple</h3>
+                <div class="inline-block bg-emerald-50 text-emerald-700 px-4 py-1 rounded-full font-bold text-sm border border-emerald-100">
+                    Base Price: Rs. <span id="modal-base-price">0</span> / kg
+                </div>
+            </div>
+
+            <div class="space-y-5">
+                <p class="text-sm text-gray-500 font-bold uppercase tracking-wider">Select Weight/Quantity</p>
+                <div class="grid grid-cols-3 gap-4">
+                    <button onclick="selectWeight(0.25)" class="weight-btn border-2 border-gray-100 rounded-2xl py-3 hover:border-emerald-500 hover:bg-emerald-50 transition text-sm font-bold text-gray-600" data-weight="0.25">250g</button>
+                    <button onclick="selectWeight(0.5)" class="weight-btn border-2 border-gray-100 rounded-2xl py-3 hover:border-emerald-500 hover:bg-emerald-50 transition text-sm font-bold text-gray-600" data-weight="0.5">500g</button>
+                    <button onclick="selectWeight(1)" class="weight-btn border-2 border-emerald-500 bg-emerald-50 text-emerald-700 rounded-2xl py-3 transition text-sm font-bold" data-weight="1">1kg</button>
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-between items-end border-t border-gray-100 pt-6">
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase mb-1">Total Amount</p>
+                    <p class="text-3xl font-extrabold text-gray-800">Rs. <span id="modal-total-price">0.00</span></p>
+                </div>
+                <button onclick="addToCartFromModal()" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-8 py-3 rounded-xl font-bold shadow-emerald-200 shadow-lg hover:shadow-xl hover:scale-105 transition transform flex items-center gap-2">
+                    <i class="fas fa-cart-plus"></i> Add
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Data (Pakistani Kiryana Context) ---
+        const categories = [
+            { id: 'staples', name: 'Flour, Rice & Sugar', icon: '🌾', color: 'from-amber-200 to-yellow-500', desc: 'Atta, Chawal, Cheeni & Gur' },
+            { id: 'pulses', name: 'Pulses (Daal)', icon: '🥣', color: 'from-orange-300 to-red-400', desc: 'Fresh Daal Chana, Moong, Masoor' },
+            { id: 'spices', name: 'Spices (Masalay)', icon: '🌶️', color: 'from-red-500 to-red-700', desc: 'Pure Spices & Recipe Mixes' },
+            { id: 'oil_tea', name: 'Oil, Ghee & Tea', icon: '🌻', color: 'from-yellow-400 to-orange-500', desc: 'Cooking Oil, Ghee & Tea Leaves' },
+            { id: 'breakfast', name: 'Breakfast & Dairy', icon: '🥛', color: 'from-blue-200 to-cyan-400', desc: 'Milk, Bread, Eggs & Butter' },
+            { id: 'snacks', name: 'Snacks & Drinks', icon: '🥤', color: 'from-pink-400 to-rose-500', desc: 'Biscuits, Chips, Nimco & Juices' },
+            { id: 'frozen', name: 'Frozen & Instant', icon: '❄️', color: 'from-cyan-500 to-blue-600', desc: 'Nuggets, Noodles & Ketchup' },
+            { id: 'baby', name: 'Baby Care', icon: '👶', color: 'from-purple-300 to-pink-300', desc: 'Diapers, Cerelac & Lotion' },
+            { id: 'household', name: 'Household Care', icon: '🧼', color: 'from-indigo-400 to-purple-500', desc: 'Soaps, Detergents & Cleaning' },
+            { id: 'stationery', name: 'Stationery & Needs', icon: '✏️', color: 'from-gray-400 to-gray-600', desc: 'Pens, Notebooks & Tape' }
+        ];
+
+        const products = [
+            // --- Staples (Atta/Rice/Sugar) ---
+            { id: 1, name: 'Super Basmati Rice (New)', category: 'staples', price: 380, emoji: '🍚' },
+            { id: 2, name: 'Super Kernel Rice (Old)', category: 'staples', price: 420, emoji: '🍚' },
+            { id: 3, name: 'Chakki Atta (Whole Wheat)', category: 'staples', price: 185, emoji: '🌾' },
+            { id: 11, name: 'Sugar (Cheeni - Export)', category: 'staples', price: 160, emoji: '🧂' },
+            { id: 15, name: 'Sella Rice (Kainat)', category: 'staples', price: 360, emoji: '🍚' },
+            { id: 16, name: 'Besan (Gram Flour)', category: 'staples', price: 280, emoji: '🟡' },
+            { id: 17, name: 'Maida (All Purpose)', category: 'staples', price: 190, emoji: '⚪' },
+            { id: 18, name: 'Suji (Semolina)', category: 'staples', price: 200, emoji: '🥣' },
+            { id: 19, name: 'Shakar (Desi)', category: 'staples', price: 220, emoji: '🟤' },
+            { id: 20, name: 'Gur (Jaggery Block)', category: 'staples', price: 200, emoji: '🟫' },
+            { id: 21, name: 'Dalia (Wheat Porridge)', category: 'staples', price: 240, emoji: '🌾' },
+
+            // --- Pulses (Daal) ---
+            { id: 4, name: 'Daal Chana (Special)', category: 'pulses', price: 290, emoji: '🥣' },
+            { id: 5, name: 'Daal Moong (Washed)', category: 'pulses', price: 340, emoji: '🟡' },
+            { id: 6, name: 'Daal Mash (Special)', category: 'pulses', price: 480, emoji: '⚪' },
+            { id: 7, name: 'White Chana (Kabuli)', category: 'pulses', price: 360, emoji: '🥘' },
+            { id: 22, name: 'Daal Masoor (Red)', category: 'pulses', price: 320, emoji: '🔴' },
+            { id: 23, name: 'Daal Masoor (Whole/Sabut)', category: 'pulses', price: 300, emoji: '🟤' },
+            { id: 24, name: 'Daal Mash (Chilka)', category: 'pulses', price: 420, emoji: '⚫' },
+            { id: 25, name: 'Lobia (Red Kidney Beans)', category: 'pulses', price: 380, emoji: '🍛' },
+            { id: 26, name: 'White Lobia (Small)', category: 'pulses', price: 350, emoji: '⚪' },
+            { id: 27, name: 'Kala Chana (Desi)', category: 'pulses', price: 280, emoji: '🍘' },
+
+            // --- Spices (Masalay) ---
+            { id: 8, name: 'Red Chilli Powder (Tez)', category: 'spices', price: 1200, emoji: '🌶️' },
+            { id: 9, name: 'Turmeric Powder (Haldi)', category: 'spices', price: 900, emoji: '🍂' },
+            { id: 10, name: 'Garam Masala Mix', category: 'spices', price: 1500, emoji: '🥘' },
+            { id: 28, name: 'Dhania Powder (Coriander)', category: 'spices', price: 800, emoji: '🌿' },
+            { id: 29, name: 'Zeera (White Cumin)', category: 'spices', price: 2200, emoji: '🌾' },
+            { id: 30, name: 'Kali Mirch (Black Pepper)', category: 'spices', price: 2400, emoji: '⚫' },
+            { id: 31, name: 'Ajwain (Carom Seeds)', category: 'spices', price: 600, emoji: '🌱' },
+            { id: 32, name: 'National Biryani Masala', category: 'spices', price: 150, emoji: '🍲' },
+            { id: 33, name: 'Shan Korma Masala', category: 'spices', price: 150, emoji: '🍛' },
+            { id: 34, name: 'National Chat Masala', category: 'spices', price: 140, emoji: '🧂' },
+            { id: 35, name: 'National Iodized Salt', category: 'spices', price: 80, emoji: '🧂' },
+
+            // --- Oil, Ghee & Tea ---
+            { id: 12, name: 'Tapal Danedar Tea (950g)', category: 'oil_tea', price: 1650, emoji: '☕' },
+            { id: 13, name: 'Cooking Oil (Open)', category: 'oil_tea', price: 550, emoji: '🌻' },
+            { id: 14, name: 'Desi Ghee (Khalis)', category: 'oil_tea', price: 2200, emoji: '🧈' },
+            { id: 36, name: 'Lipton Yellow Label (950g)', category: 'oil_tea', price: 1700, emoji: '☕' },
+            { id: 37, name: 'Supreme Tea (950g)', category: 'oil_tea', price: 1600, emoji: '🍵' },
+            { id: 38, name: 'Dalda Cooking Oil (1L)', category: 'oil_tea', price: 580, emoji: '🌻' },
+            { id: 39, name: 'Mezan Canola Oil (1L)', category: 'oil_tea', price: 570, emoji: '🌻' },
+            { id: 40, name: 'Sufi Sunflower Oil (1L)', category: 'oil_tea', price: 590, emoji: '🌻' },
+            { id: 41, name: 'Dalda Banaspati Ghee (1kg)', category: 'oil_tea', price: 560, emoji: '🧈' },
+            { id: 42, name: 'Mustard Oil (Sarson)', category: 'oil_tea', price: 650, emoji: '🟡' },
+
+            // --- Breakfast & Dairy ---
+            { id: 43, name: 'Olpers Milk (1L)', category: 'breakfast', price: 300, emoji: '🥛' },
+            { id: 44, name: 'Milkpak (1L)', category: 'breakfast', price: 300, emoji: '🥛' },
+            { id: 45, name: 'Everyday Powder (Tea)', category: 'breakfast', price: 1350, emoji: '☕' },
+            { id: 46, name: 'Farm Eggs (Dozen)', category: 'breakfast', price: 350, emoji: '🥚' },
+            { id: 47, name: 'Desi Eggs (Dozen)', category: 'breakfast', price: 600, emoji: '🥚' },
+            { id: 48, name: 'Dawn Bread (Large)', category: 'breakfast', price: 220, emoji: '🍞' },
+            { id: 49, name: 'Cake Rusk (Pack)', category: 'breakfast', price: 250, emoji: '🥯' },
+            { id: 50, name: 'Blueband Margarine', category: 'breakfast', price: 450, emoji: '🧈' },
+            { id: 51, name: 'Mitchells Jam (Mixed)', category: 'breakfast', price: 380, emoji: '🍓' },
+
+            // --- Snacks & Drinks ---
+            { id: 54, name: 'Rooh Afza (800ml)', category: 'snacks', price: 450, emoji: '🍷' },
+            { id: 55, name: 'Jam-e-Shirin (800ml)', category: 'snacks', price: 440, emoji: '🍷' },
+            { id: 56, name: 'Tang Orange (Sachet)', category: 'snacks', price: 60, emoji: '🍊' },
+            { id: 57, name: 'Nestle Mango Juice (1L)', category: 'snacks', price: 280, emoji: '🥭' },
+            { id: 58, name: 'Coca Cola (1.5L)', category: 'snacks', price: 180, emoji: '🥤' },
+            { id: 59, name: 'Lays Masala (Large)', category: 'snacks', price: 100, emoji: '🥔' },
+            { id: 60, name: 'Kurkure Chutney (Large)', category: 'snacks', price: 100, emoji: '🌶️' },
+            { id: 61, name: 'Sooper Biscuits (Family)', category: 'snacks', price: 120, emoji: '🍪' },
+            { id: 62, name: 'Rio Biscuits (Family)', category: 'snacks', price: 100, emoji: '🍪' },
+            { id: 63, name: 'Prince Biscuits', category: 'snacks', price: 50, emoji: '🍫' },
+            { id: 64, name: 'Candi Biscuits', category: 'snacks', price: 60, emoji: '🍘' },
+            { id: 65, name: 'Mix Nimco (Special)', category: 'snacks', price: 600, emoji: '🥨' },
+            { id: 66, name: 'Zeera Plus', category: 'snacks', price: 50, emoji: '🍪' },
+            { id: 81, name: 'Pepsi (1.5L)', category: 'snacks', price: 180, emoji: '🥤' },
+            { id: 82, name: '7up (1.5L)', category: 'snacks', price: 180, emoji: '🥤' },
+            { id: 83, name: 'Sting Energy', category: 'snacks', price: 100, emoji: '⚡' },
+            { id: 84, name: 'Lays Yoghurt & Herb', category: 'snacks', price: 100, emoji: '🥔' },
+            { id: 85, name: 'Cocomo (Family Pack)', category: 'snacks', price: 50, emoji: '🍫' },
+            { id: 86, name: 'Dairy Milk Chocolate', category: 'snacks', price: 200, emoji: '🍫' },
+            { id: 87, name: 'Aquafina Water (1.5L)', category: 'snacks', price: 100, emoji: '💧' },
+            { id: 88, name: 'Tapal Green Tea', category: 'snacks', price: 250, emoji: '🍵' },
+            { id: 89, name: 'Slanty (Vegetable)', category: 'snacks', price: 50, emoji: '🥨' },
+            { id: 90, name: 'Chillz Chips', category: 'snacks', price: 100, emoji: '🌶️' },
+
+            // --- Frozen & Instant (NEW) ---
+            { id: 52, name: 'National Ketchup', category: 'frozen', price: 350, emoji: '🍅' },
+            { id: 91, name: 'K&Ns Nuggets (Small)', category: 'frozen', price: 850, emoji: '🍗' },
+            { id: 92, name: 'K&Ns Seekh Kabab', category: 'frozen', price: 1100, emoji: '🍢' },
+            { id: 93, name: 'Menu Burger Patties', category: 'frozen', price: 950, emoji: '🍔' },
+            { id: 94, name: 'Knorr Noodles (Chatpata)', category: 'frozen', price: 60, emoji: '🍜' },
+            { id: 95, name: 'Shoop Noodles', category: 'frozen', price: 50, emoji: '🍜' },
+            { id: 96, name: 'National Chilli Garlic', category: 'frozen', price: 320, emoji: '🌶️' },
+            { id: 97, name: 'Shangrila Vinegar', category: 'frozen', price: 150, emoji: '🧴' },
+            { id: 98, name: 'Shangrila Soy Sauce', category: 'frozen', price: 150, emoji: '🧴' },
+            { id: 99, name: 'Youngs Mayonnaise', category: 'frozen', price: 450, emoji: '🧴' },
+
+            // --- Baby Care (NEW) ---
+            { id: 100, name: 'Pampers (Small Pack)', category: 'baby', price: 1800, emoji: '👶' },
+            { id: 101, name: 'Cerelac (Wheat)', category: 'baby', price: 650, emoji: '🥣' },
+            { id: 102, name: 'Johnsons Baby Lotion', category: 'baby', price: 550, emoji: '🧴' },
+            { id: 103, name: 'Johnsons Baby Powder', category: 'baby', price: 450, emoji: '❄️' },
+            { id: 104, name: 'Baby Feeder (Medium)', category: 'baby', price: 350, emoji: '🍼' },
+            
+            // --- Household Care ---
+            { id: 67, name: 'Surf Excel (1kg)', category: 'household', price: 650, emoji: '🧺' },
+            { id: 68, name: 'Ariel Detergent (1kg)', category: 'household', price: 620, emoji: '🧺' },
+            { id: 69, name: 'Bonus Washing Powder', category: 'household', price: 400, emoji: '🧼' },
+            { id: 70, name: 'Vim Dishwash Bar', category: 'household', price: 120, emoji: '🍽️' },
+            { id: 71, name: 'Lux Soap (Large)', category: 'household', price: 180, emoji: '🧼' },
+            { id: 72, name: 'Lifebuoy Soap', category: 'household', price: 140, emoji: '🧼' },
+            { id: 73, name: 'Dettol Soap', category: 'household', price: 160, emoji: '🦠' },
+            { id: 74, name: 'Head & Shoulders', category: 'household', price: 850, emoji: '🚿' },
+            { id: 75, name: 'Sun Silk Shampoo', category: 'household', price: 700, emoji: '🚿' },
+            { id: 76, name: 'Colgate Toothpaste', category: 'household', price: 350, emoji: '🦷' },
+            { id: 77, name: 'Harpic Power Plus', category: 'household', price: 450, emoji: '🚽' },
+            { id: 78, name: 'Mortein Spray', category: 'household', price: 750, emoji: '🦟' },
+            { id: 79, name: 'Rose Petal Tissues', category: 'household', price: 250, emoji: '🧻' },
+            { id: 80, name: 'Matchbox Pack (10s)', category: 'household', price: 80, emoji: '🔥' },
+
+            // --- Stationery (NEW) ---
+            { id: 105, name: 'Ball Point (Piano)', category: 'stationery', price: 20, emoji: '🖊️' },
+            { id: 106, name: 'Register (Rough)', category: 'stationery', price: 150, emoji: '📓' },
+            { id: 107, name: 'School Copy (English)', category: 'stationery', price: 80, emoji: '📒' },
+            { id: 108, name: 'Scotch Tape (Large)', category: 'stationery', price: 100, emoji: '📼' },
+            { id: 109, name: 'Pencil Box (Goldfish)', category: 'stationery', price: 200, emoji: '✏️' },
+            { id: 110, name: 'AA Batteries (Pair)', category: 'stationery', price: 120, emoji: '🔋' }
+        ];
+
+        // --- State ---
+        let cart = [];
+        let lastOrder = []; // Store cart for printing after checkout
+        let currentProduct = null;
+        let selectedWeight = 1;
+
+        // --- Components ---
+
+        function getHeroSection() {
+            return `
+            <section class="relative bg-gradient-to-br from-emerald-50 to-teal-100 overflow-hidden min-h-[calc(100vh-5rem)] flex items-center">
+                <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-emerald-100/50 to-transparent rounded-bl-[100px]"></div>
+                <div class="container mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center w-full">
+                    <div class="w-full md:w-1/2 mb-10 md:mb-0 slide-up">
+                        <span class="bg-emerald-100 text-emerald-700 px-4 py-1 rounded-full text-sm font-bold tracking-wide uppercase mb-4 inline-block">Best Kiryana Store in Islamabad</span>
+                        <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 leading-tight mb-6">
+                            Monthly Rashan, <br/>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Best Quality.</span>
+                        </h1>
+                        <p class="text-gray-600 text-lg mb-8 leading-relaxed max-w-lg">
+                            Get premium Basmati rice, fresh daal, pure spices, and cooking oil delivered to your home. Quality guaranteed by Hafiz Hassan.
+                        </p>
+                        <div class="flex gap-4">
+                            <a href="#categories-section" class="bg-emerald-600 text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-emerald-300/50 hover:bg-emerald-700 hover:scale-105 transition transform flex items-center gap-2">
+                                Buy Rashan <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="#contact-section" class="bg-white text-emerald-600 px-8 py-4 rounded-xl font-bold border border-emerald-200 hover:bg-emerald-50 transition transform">
+                                Call to Order
+                            </a>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 flex justify-center relative">
+                        <div class="relative w-full max-w-lg">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-emerald-400 to-teal-300 rounded-full blur-3xl opacity-30 animate-pulse"></div>
+                            <!-- Composed Emoji Illustration -->
+                            <div class="float text-center">
+                                <div class="text-[150px] md:text-[200px] leading-none drop-shadow-2xl filter">🌾</div>
+                                <div class="absolute top-10 -left-4 text-8xl drop-shadow-xl animate-bounce" style="animation-duration: 3s;">🍚</div>
+                                <div class="absolute bottom-0 -right-4 text-8xl drop-shadow-xl animate-bounce" style="animation-duration: 4s;">🌶️</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            `;
+        }
+
+        function getFeaturesSection() {
+            const features = [
+                { icon: 'fa-truck-fast', title: 'Fast Delivery', desc: 'Islamabad & Rawalpindi' },
+                { icon: 'fa-check-circle', title: 'Khalis Quality', desc: 'No Adulteration (Milawat Pak)' },
+                { icon: 'fa-tags', title: 'Wholesale Rates', desc: 'Cheaper than Market' },
+                { icon: 'fa-weight-hanging', title: 'Exact Weight', desc: 'Poora Tool (Full Weight)' }
+            ];
+            
+            let html = `
+            <section class="py-16 bg-white">
+                <div class="container mx-auto px-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            `;
+            
+            features.forEach(f => {
+                html += `
+                    <div class="relative overflow-hidden group flex flex-col items-center text-center p-8 rounded-3xl hover:shadow-2xl transition-all duration-300 border border-gray-100 bg-white hover:-translate-y-2">
+                        <!-- Gradient Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500 to-teal-600 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        
+                        <!-- Content -->
+                        <div class="relative z-10 w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-2xl mb-4 group-hover:bg-white group-hover:text-emerald-600 transition duration-300">
+                            <i class="fas ${f.icon}"></i>
+                        </div>
+                        <h3 class="relative z-10 text-xl font-bold text-gray-800 mb-2 group-hover:text-white transition duration-300">${f.title}</h3>
+                        <p class="relative z-10 text-gray-500 text-sm group-hover:text-emerald-100 transition duration-300">${f.desc}</p>
+                    </div>
+                `;
+            });
+            
+            html += `</div></div></section>`;
+            return html;
+        }
+
+        function getFeaturedProductsSection() {
+            // Get specific products for feature
+            const featuredIds = [1, 4, 12, 13, 91, 100]; // Added Nuggets and Pampers
+            const featuredProducts = products.filter(p => featuredIds.includes(p.id));
+            
+            let html = `
+            <section class="py-20 bg-emerald-50/50">
+                <div class="container mx-auto px-6">
+                    <div class="flex justify-between items-end mb-12">
+                        <div>
+                            <span class="text-emerald-500 font-bold uppercase tracking-wider text-sm">Daily Essentials</span>
+                            <h2 class="text-3xl font-bold text-gray-800 mt-2">Top Selling Items</h2>
+                        </div>
+                        <a href="#categories-section" class="hidden md:flex items-center gap-2 text-emerald-600 font-bold hover:text-emerald-700 transition">View All <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            `;
+            
+            featuredProducts.forEach(prod => {
+                // Find category color
+                const catColor = categories.find(c => c.id === prod.category)?.color || 'from-emerald-500 to-teal-600';
+                
+                html += `
+                    <div class="bg-white rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 p-6 flex flex-col items-center text-center group relative overflow-hidden hover:-translate-y-2 border border-gray-100">
+                        <!-- Gradient Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-br ${catColor} opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        
+                        <div class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full z-20 shadow-sm">Hot</div>
+                        
+                        <div class="text-7xl mb-4 group-hover:scale-110 transition duration-300 relative z-10 filter drop-shadow-sm">${prod.emoji}</div>
+                        
+                        <h3 class="text-xl font-bold text-gray-800 relative z-10 group-hover:text-white transition duration-300">${prod.name}</h3>
+                        <p class="text-emerald-600 font-bold mb-4 relative z-10 group-hover:text-emerald-100 transition duration-300">Rs. ${prod.price} <span class="text-sm font-normal opacity-80">/ unit</span></p>
+                        
+                        <button onclick="openProductModal(${prod.id})" class="w-full bg-emerald-50 text-emerald-600 font-bold py-3 rounded-xl hover:bg-white hover:text-emerald-600 transition relative z-10 shadow-sm">Add to Cart</button>
+                    </div>
+                `;
+            });
+            
+            html += `</div></div></section>`;
+            return html;
+        }
+
+        function getSpecialOfferSection() {
+            return `
+            <section class="py-20">
+                <div class="container mx-auto px-6">
+                    <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-[2.5rem] p-10 md:p-16 text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between shadow-2xl group hover:shadow-emerald-500/30 transition duration-500">
+                        <!-- Background Pattern -->
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-20 -mt-20 group-hover:scale-150 transition duration-1000"></div>
+                        <div class="absolute bottom-0 left-0 w-40 h-40 bg-white opacity-5 rounded-full -ml-10 -mb-10 group-hover:scale-150 transition duration-1000"></div>
+                        
+                        <div class="relative z-10 md:w-1/2 mb-8 md:mb-0 text-center md:text-left slide-up">
+                            <span class="bg-white/20 text-white px-4 py-1 rounded-full text-sm font-bold tracking-wide uppercase mb-4 inline-block backdrop-blur-sm border border-white/20">Ramadan & Monthly Deal</span>
+                            <h2 class="text-4xl md:text-5xl font-extrabold mb-4">Special Discount on 5kg Oil & Ghee</h2>
+                            <p class="text-emerald-100 text-lg mb-8 max-w-md">Stock up your kitchen with premium cooking oil. Limited stock available at old rates.</p>
+                            <div class="flex gap-4 justify-center md:justify-start">
+                                <a href="#categories-section" class="bg-white text-emerald-600 px-8 py-4 rounded-xl font-bold shadow-lg hover:bg-emerald-50 transition transform hover:scale-105">Order Now</a>
+                            </div>
+                        </div>
+                        
+                        <div class="relative z-10 md:w-1/2 flex justify-center">
+                            <div class="text-9xl md:text-[200px] drop-shadow-2xl float transition duration-300 group-hover:rotate-12">🌻</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            `;
+        }
+
+        function getTestimonialsSection() {
+            const reviews = [
+                { name: 'Bilal Khan', role: 'Shopkeeper', text: 'Hassan Bhai ki daal aur chawal ki quality behtareen hai. Rates bhi market se munasib hain.', stars: 5 },
+                { name: 'Mrs. Farida', role: 'Housewife', text: 'I order my monthly rashan from here. They deliver exact weight and the atta is pure chakki one.', stars: 5 },
+                { name: 'Usman Ali', role: 'Regular Customer', text: 'Best service in Islamabad. Ordered tea and sugar, got delivered within 2 hours.', stars: 4 }
+            ];
+            
+            let html = `
+            <section class="py-20 bg-gray-50">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <span class="text-emerald-500 font-bold uppercase tracking-wider text-sm">Customer Feedback</span>
+                        <h2 class="text-3xl font-bold text-gray-800 mt-2">What People Say</h2>
+                        <div class="w-20 h-1 bg-emerald-500 mx-auto mt-4 rounded-full"></div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            `;
+            
+            reviews.forEach(review => {
+                let starsHtml = '';
+                for(let i=0; i<5; i++) {
+                    starsHtml += `<i class="fas fa-star text-sm ${i < review.stars ? 'text-yellow-400' : 'text-gray-300'} group-hover:text-white transition duration-300"></i>`;
+                }
+                
+                html += `
+                    <div class="relative overflow-hidden group bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-2">
+                        <!-- Gradient Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex mb-4 gap-1 text-yellow-400 group-hover:text-white">${starsHtml}</div>
+                            <p class="text-gray-600 mb-6 italic group-hover:text-indigo-100 transition duration-300">"${review.text}"</p>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center font-bold text-emerald-600 text-xl group-hover:bg-white group-hover:text-purple-600 transition duration-300 shadow-sm">
+                                    ${review.name.charAt(0)}
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800 group-hover:text-white transition duration-300">${review.name}</h4>
+                                    <p class="text-xs text-gray-500 uppercase group-hover:text-purple-200 transition duration-300">${review.role}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `</div></div></section>`;
+            return html;
+        }
+
+        function getFAQSection() {
+            return `
+            <section class="py-20 bg-white">
+                <div class="container mx-auto px-6 max-w-4xl">
+                    <div class="text-center mb-16">
+                        <span class="text-emerald-500 font-bold uppercase tracking-wider text-sm">FAQ</span>
+                        <h2 class="text-3xl font-bold text-gray-800 mt-2">Frequently Asked Questions</h2>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="relative overflow-hidden group border border-gray-200 rounded-2xl p-6 hover:border-emerald-500 transition-all duration-300 bg-gray-50 cursor-pointer hover:shadow-lg">
+                            <div class="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-600 opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                            
+                            <h3 class="font-bold text-lg text-gray-800 mb-2 relative z-10 group-hover:text-white transition">Is Home Delivery free?</h3>
+                            <p class="text-gray-600 relative z-10 group-hover:text-emerald-50 transition">Free delivery for orders above Rs. 2000 in Islamabad sectors (F-10, G-10, G-11, etc).</p>
+                        </div>
+                        <div class="relative overflow-hidden group border border-gray-200 rounded-2xl p-6 hover:border-emerald-500 transition-all duration-300 bg-gray-50 cursor-pointer hover:shadow-lg">
+                            <div class="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-600 opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                            
+                            <h3 class="font-bold text-lg text-gray-800 mb-2 relative z-10 group-hover:text-white transition">Do you sell open (khula) ghee/oil?</h3>
+                            <p class="text-gray-600 relative z-10 group-hover:text-emerald-50 transition">Yes, we provide high quality open cooking oil and desi ghee by weight.</p>
+                        </div>
+                        <div class="relative overflow-hidden group border border-gray-200 rounded-2xl p-6 hover:border-emerald-500 transition-all duration-300 bg-gray-50 cursor-pointer hover:shadow-lg">
+                            <div class="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-600 opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                            
+                            <h3 class="font-bold text-lg text-gray-800 mb-2 relative z-10 group-hover:text-white transition">Is the Atta fresh?</h3>
+                            <p class="text-gray-600 relative z-10 group-hover:text-emerald-50 transition">We have our own Chakki agreement, so you get fresh Whole Wheat Atta daily.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            `;
+        }
+
+        function getContactSection() {
+            return `
+            <section id="contact-section" class="py-20 bg-emerald-50 relative">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-16 slide-up">
+                        <span class="text-emerald-500 font-bold uppercase tracking-wider text-sm">Get in Touch</span>
+                        <h2 class="text-4xl font-bold text-gray-800 mt-2">Order via WhatsApp or Call</h2>
+                        <div class="w-20 h-1 bg-emerald-500 mx-auto mt-4 rounded-full"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <!-- Contact Info Card -->
+                        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-10 text-white shadow-2xl relative overflow-hidden slide-up">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500 rounded-full blur-3xl opacity-20 -mr-10 -mt-10"></div>
+                            
+                            <h3 class="text-2xl font-bold mb-6">Contact Information</h3>
+                            <p class="text-gray-400 mb-8">Direct line to Hafiz Hassan Abdullah for orders and complaints.</p>
+                            
+                            <div class="space-y-6">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-gray-700 rounded-xl flex items-center justify-center text-emerald-400 text-xl">
+                                        <i class="fas fa-phone-alt"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400 uppercase">Phone / WhatsApp</p>
+                                        <p class="font-semibold">+92 302 3536363</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-gray-700 rounded-xl flex items-center justify-center text-emerald-400 text-xl">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400 uppercase">Email</p>
+                                        <p class="font-semibold">rajahassan38201@gmail.com</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-gray-700 rounded-xl flex items-center justify-center text-emerald-400 text-xl">
+                                        <i class="fas fa-map-pin"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400 uppercase">Location</p>
+                                        <p class="font-semibold">Islamabad, Pakistan</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Form -->
+                        <form onsubmit="handleContactSubmit(event)" class="bg-white p-8 rounded-3xl shadow-lg slide-up">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label class="block text-gray-600 text-sm font-bold mb-2">First Name</label>
+                                    <input type="text" required class="w-full bg-gray-50 text-gray-800 border border-gray-200 rounded-xl py-3 px-4 focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 text-sm font-bold mb-2">Last Name</label>
+                                    <input type="text" required class="w-full bg-gray-50 text-gray-800 border border-gray-200 rounded-xl py-3 px-4 focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition">
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <label class="block text-gray-600 text-sm font-bold mb-2">Phone Number</label>
+                                <input type="tel" required class="w-full bg-gray-50 text-gray-800 border border-gray-200 rounded-xl py-3 px-4 focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition">
+                            </div>
+                            <div class="mb-6">
+                                <label class="block text-gray-600 text-sm font-bold mb-2">List of Items (Rashan List)</label>
+                                <textarea rows="4" required class="w-full bg-gray-50 text-gray-800 border border-gray-200 rounded-xl py-3 px-4 focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-emerald-200 hover:scale-[1.02] transition transform">
+                                Send Order
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            `;
+        }
+
+        // --- Render Functions ---
+
+        function renderHome() {
+            const app = document.getElementById('app');
+            window.scrollTo(0,0);
+            
+            let html = getHeroSection();
+            html += getFeaturesSection();
+
+            // Categories
+            html += `
+            <section id="categories-section" class="py-20 bg-gray-50">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-16 slide-up">
+                        <span class="text-emerald-500 font-bold uppercase tracking-wider text-sm">Grocery Categories</span>
+                        <h2 class="text-4xl font-bold text-gray-800 mt-2">Shop Rashan by Category</h2>
+                        <div class="w-20 h-1 bg-emerald-500 mx-auto mt-4 rounded-full"></div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 slide-up">
+            `;
+            categories.forEach(cat => {
+                html += `
+                    <div onclick="renderCategory('${cat.id}')" class="group cursor-pointer bg-white rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden relative h-80 flex flex-col items-center justify-center border border-gray-100 p-6">
+                        <div class="absolute inset-0 bg-gradient-to-br ${cat.color} opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        <div class="text-7xl mb-6 transform group-hover:scale-110 group-hover:rotate-6 transition duration-500 relative z-10">${cat.icon}</div>
+                        <h3 class="text-2xl font-bold text-gray-800 group-hover:text-white transition relative z-10">${cat.name}</h3>
+                        <p class="text-gray-500 text-sm mt-2 group-hover:text-white/90 text-center relative z-10">${cat.desc}</p>
+                        <div class="mt-6 w-10 h-10 rounded-full bg-gray-100 group-hover:bg-white flex items-center justify-center transition duration-300 relative z-10">
+                            <i class="fas fa-arrow-right text-gray-400 group-hover:text-emerald-600"></i>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div></div></section>`;
+            
+            html += getSpecialOfferSection();
+            html += getFeaturedProductsSection();
+            html += getTestimonialsSection();
+            html += getFAQSection();
+            html += getContactSection();
+
+            app.innerHTML = html;
+        }
+
+        function renderCategory(catId) {
+            const category = categories.find(c => c.id === catId);
+            const catProducts = products.filter(p => p.category === catId);
+            const app = document.getElementById('app');
+            window.scrollTo(0,0);
+
+            let html = `
+                <div class="container mx-auto px-6 py-10 min-h-screen">
+                    <div class="mb-10 fade-in flex flex-col md:flex-row md:items-center gap-6">
+                        <button onclick="renderHome()" class="bg-white border border-gray-200 hover:bg-emerald-50 hover:border-emerald-200 text-gray-600 rounded-xl w-12 h-12 flex items-center justify-center transition shadow-sm"><i class="fas fa-arrow-left"></i></button>
+                        <div>
+                            <span class="text-emerald-500 font-bold uppercase text-xs tracking-wider">Category</span>
+                            <h2 class="text-4xl font-extrabold text-gray-800">${category.name}</h2>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 fade-in">
+            `;
+
+            catProducts.forEach(prod => {
+                html += `
+                    <div class="bg-white rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 p-8 border border-gray-100 flex flex-col items-center text-center relative overflow-hidden group hover:-translate-y-2">
+                         <div class="absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                         <div class="absolute top-0 right-0 w-24 h-24 bg-gray-50 rounded-bl-[60px] -mr-4 -mt-4 transition duration-300 group-hover:bg-white/20 z-10"></div>
+                        <div class="text-7xl mb-6 group-hover:scale-110 transition duration-300 filter drop-shadow-sm relative z-10">${prod.emoji}</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-1 relative z-10 group-hover:text-white transition">${prod.name}</h3>
+                        <p class="text-emerald-600 font-bold text-lg mb-6 relative z-10 group-hover:text-white/90 transition">Rs. ${prod.price} <span class="text-sm text-gray-400 font-normal group-hover:text-white/70">/ unit</span></p>
+                        <button onclick="openProductModal(${prod.id})" class="w-full bg-gray-50 text-gray-800 font-bold py-3 rounded-xl hover:bg-white hover:text-emerald-600 transition duration-300 border border-gray-200 relative z-10 shadow-sm">
+                            Select Options
+                        </button>
+                    </div>
+                `;
+            });
+            html += `</div></div>`;
+            app.innerHTML = html;
+        }
+
+        function renderCart() {
+            const app = document.getElementById('app');
+            window.scrollTo(0,0);
+
+            if (cart.length === 0) {
+                app.innerHTML = `
+                    <div class="container mx-auto px-6 py-20 text-center fade-in min-h-[60vh] flex flex-col justify-center items-center">
+                        <div class="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-shopping-basket text-5xl text-gray-300"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800 mb-2">Your cart is empty</h2>
+                        <p class="text-gray-400 mb-8 max-w-md">Browse our categories to find fresh staples, daal and spices.</p>
+                        <button onclick="renderHome()" class="bg-emerald-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-emerald-600 transition shadow-lg hover:shadow-emerald-200">Start Shopping</button>
+                    </div>
+                `;
+                return;
+            }
+
+            let total = 0;
+            let html = `
+                <div class="container mx-auto px-6 py-10">
+                    <h2 class="text-3xl font-bold mb-8 fade-in text-gray-800">Shopping Cart <span class="text-lg font-normal text-gray-500 ml-2">(${cart.length} items)</span></h2>
+                    <div class="flex flex-col lg:flex-row gap-8 fade-in">
+                        <div class="lg:w-2/3">
+                            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                                <div class="divide-y divide-gray-100">
+            `;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.weight;
+                total += itemTotal;
+                const weightLabel = item.weight < 1 ? (item.weight * 1000) + 'g' : item.weight + 'kg';
+                
+                html += `
+                    <div class="p-6 flex items-center gap-6 hover:bg-gray-50 transition">
+                        <div class="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center text-4xl shrink-0">
+                            ${item.emoji}
+                        </div>
+                        <div class="flex-grow">
+                            <h3 class="font-bold text-lg text-gray-800">${item.name}</h3>
+                            <p class="text-gray-500 text-sm">Weight/Qty: ${weightLabel}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-xl text-emerald-600">Rs. ${itemTotal.toFixed(0)}</p>
+                            <button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-600 text-sm mt-1 font-medium transition">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:w-1/3">
+                            <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-8 sticky top-24">
+                                <h3 class="text-xl font-bold text-gray-800 mb-6">Order Summary</h3>
+                                <div class="space-y-4 mb-8">
+                                    <div class="flex justify-between text-gray-600">
+                                        <span>Subtotal</span>
+                                        <span>Rs. ${total.toFixed(0)}</span>
+                                    </div>
+                                    <div class="flex justify-between text-gray-600">
+                                        <span>Delivery</span>
+                                        <span class="text-emerald-600 font-medium">Free</span>
+                                    </div>
+                                    <div class="border-t border-gray-100 pt-4 flex justify-between text-xl font-bold text-gray-800">
+                                        <span>Total</span>
+                                        <span>Rs. ${total.toFixed(0)}</span>
+                                    </div>
+                                </div>
+                                <button onclick="checkout()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-4 rounded-xl font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] transition transform">
+                                    Checkout Now
+                                </button>
+                                <button onclick="renderHome()" class="w-full mt-4 text-gray-500 font-semibold hover:text-emerald-600 transition">Continue Shopping</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            app.innerHTML = html;
+        }
+
+        // --- Logic Functions ---
+
+        function openProductModal(prodId) {
+            currentProduct = products.find(p => p.id === prodId);
+            selectedWeight = 1;
+            
+            document.getElementById('modal-title').innerText = currentProduct.name;
+            document.getElementById('modal-emoji').innerText = currentProduct.emoji;
+            document.getElementById('modal-base-price').innerText = currentProduct.price;
+            
+            document.querySelectorAll('.weight-btn').forEach(btn => {
+                btn.classList.remove('border-emerald-500', 'bg-emerald-50', 'text-emerald-700');
+                btn.classList.add('border-gray-100', 'text-gray-600');
+            });
+            const defaultBtn = document.querySelector('button[data-weight="1"]');
+            defaultBtn.classList.remove('border-gray-100', 'text-gray-600');
+            defaultBtn.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-700');
+
+            updateModalPrice();
+            
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        function selectWeight(weight) {
+            selectedWeight = weight;
+            document.querySelectorAll('.weight-btn').forEach(btn => {
+                btn.classList.remove('border-emerald-500', 'bg-emerald-50', 'text-emerald-700');
+                btn.classList.add('border-gray-100', 'text-gray-600');
+            });
+            const activeBtn = document.querySelector(`button[data-weight="${weight}"]`);
+            activeBtn.classList.remove('border-gray-100', 'text-gray-600');
+            activeBtn.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-700');
+            updateModalPrice();
+        }
+
+        function updateModalPrice() {
+            const total = currentProduct.price * selectedWeight;
+            document.getElementById('modal-total-price').innerText = total.toFixed(0);
+        }
+
+        function addToCartFromModal() {
+            cart.push({
+                ...currentProduct,
+                weight: selectedWeight,
+                cartId: Date.now()
+            });
+            updateCartCount();
+            closeModal();
+            const cartIcon = document.querySelector('.fa-shopping-basket').parentElement;
+            cartIcon.classList.add('scale-125', 'bg-emerald-200');
+            setTimeout(() => {
+                cartIcon.classList.remove('scale-125', 'bg-emerald-200');
+            }, 200);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartCount();
+            renderCart();
+        }
+
+        function updateCartCount() {
+            document.getElementById('cart-count').innerText = cart.length;
+        }
+
+        function checkout() {
+            if (cart.length === 0) return;
+
+            // Save order for PDF generation
+            lastOrder = [...cart];
+
+            // Clear cart directly without email logic
+            cart = [];
+            updateCartCount();
+            
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div class="container mx-auto px-6 py-20 text-center fade-in">
+                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
+                        <i class="fas fa-check text-4xl text-green-500"></i>
+                    </div>
+                    <h2 class="text-4xl font-extrabold text-gray-800 mb-4">Order Placed Successfully!</h2>
+                    <p class="text-gray-500 mb-8 max-w-lg mx-auto">Your order is ready. Please click the button below to print or download your receipt.</p>
+                    
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <button onclick="printReceipt()" class="bg-gray-800 text-white px-8 py-3 rounded-xl font-bold hover:bg-gray-900 transition shadow-lg flex items-center justify-center gap-2">
+                            <i class="fas fa-file-pdf"></i> Print Order Slip
+                        </button>
+                        <button onclick="renderHome()" class="bg-emerald-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-emerald-600 transition shadow-lg">
+                            Back to Home
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function printReceipt() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Header
+            doc.setFontSize(22);
+            doc.setTextColor(16, 185, 129); // Emerald Color
+            doc.text("Hassan General Store", 105, 20, null, null, "center");
+            
+            doc.setFontSize(12);
+            doc.setTextColor(50, 50, 50);
+            doc.text("Premium Kiryana Online", 105, 30, null, null, "center");
+            doc.text("Islamabad, Pakistan | +92 302 3536363", 105, 36, null, null, "center");
+
+            // Line Divider
+            doc.setDrawColor(200, 200, 200);
+            doc.line(10, 42, 200, 42);
+
+            // Order Info
+            doc.setFontSize(10);
+            doc.text(`Order Date: ${new Date().toLocaleDateString()}`, 14, 52);
+            doc.text(`Order Time: ${new Date().toLocaleTimeString()}`, 14, 58);
+
+            // Table
+            const tableColumn = ["Item Name", "Weight/Qty", "Price (PKR)"];
+            const tableRows = [];
+            let total = 0;
+
+            lastOrder.forEach(item => {
+                const itemTotal = item.price * item.weight;
+                total += itemTotal;
+                const weightLabel = item.weight < 1 ? (item.weight * 1000) + 'g' : item.weight + 'kg';
+                tableRows.push([item.name, weightLabel, itemTotal.toFixed(0)]);
+            });
+
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 65,
+                theme: 'striped',
+                headStyles: { fillColor: [16, 185, 129] }, // Emerald header
+                styles: { fontSize: 10, cellPadding: 3 }
+            });
+
+            // Total Section
+            const finalY = doc.lastAutoTable.finalY + 10;
+            
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.text(`Total Amount: Rs. ${total.toFixed(0)}`, 195, finalY, null, null, "right");
+
+            // Footer
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(100, 100, 100);
+            doc.text("Thank you for shopping with Hassan General Store!", 105, finalY + 20, null, null, "center");
+            doc.text("Quality Guaranteed.", 105, finalY + 25, null, null, "center");
+
+            doc.save("HassanStore_Receipt.pdf");
+        }
+        
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            alert("Thank you for your message! Hassan Bhai will contact you shortly.");
+            e.target.reset();
+        }
+
+        // Initialize
+        renderHome();
+
+    </script>
+</body>
+</html>
